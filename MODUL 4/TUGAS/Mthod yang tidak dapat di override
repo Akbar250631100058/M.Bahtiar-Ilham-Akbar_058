@@ -1,0 +1,26 @@
+abstract class Pegawai {
+
+    protected String nik;
+    protected String nama;
+    protected int kehadiran;
+    protected double gaji;
+
+    public Pegawai(String nik,
+                   String nama,
+                   int kehadiran,
+                   double gaji) {
+
+        this.nik = nik;
+        this.nama = nama;
+        this.kehadiran = kehadiran;
+        this.gaji = gaji;
+    }
+
+    public final void tampilPerusahaan() {
+        System.out.println("PT. SINAR SOSRO");
+    }
+
+    public abstract double hitungGaji();
+
+    public abstract void lihatData();
+}
