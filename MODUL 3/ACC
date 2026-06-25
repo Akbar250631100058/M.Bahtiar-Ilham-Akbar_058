@@ -1,0 +1,66 @@
+import java.util.Scanner;
+// Superclass
+class Pegawai {
+String nama;
+double gajiAwal = 1000000;
+Pegawai(String nama) {
+this.nama = nama;
+}
+double hitungGaji() {
+return gajiAwal;
+}
+}
+// Subclass Kasir
+class Kasir extends Pegawai {
+int hadirTepatWaktu;
+Kasir(String nama, int hadirTepatWaktu) {
+super(nama);
+this.hadirTepatWaktu = hadirTepatWaktu;
+}
+@Override
+double hitungGaji() {
+return gajiAwal + (hadirTepatWaktu * 5000);
+}
+}
+
+// Subclass Pramuniaga
+class Pramuniaga extends Pegawai {
+int hadirTepatWaktu;
+int hariLembur;
+Pramuniaga(String nama, int hadirTepatWaktu, int hariLembur) {
+super(nama);
+this.hadirTepatWaktu = hadirTepatWaktu;
+this.hariLembur = hariLembur;
+}
+@Override
+double hitungGaji() {
+return gajiAwal + (hadirTepatWaktu * 5000) + (hariLembur * 20000);
+}
+}
+// Main Class
+public class Main {
+public static void main(String[] args) {
+try (Scanner input = new Scanner(System.in)) {
+System.out.println("=== PROGRAM GAJI PEGAWAI TOKO
+===");
+System.out.print("Masukkan nama pegawai : ");
+String nama = input.nextLine();
+System.out.print("Pilih jabatan (1. Kasir / 2. Pramuniaga) : ");
+int pilihan = input.nextInt();
+System.out.print("Jumlah hadir tepat waktu : ");
+int hadir = input.nextInt();
+Pegawai pegawai;
+if (pilihan == 1) {
+pegawai = new Kasir(nama, hadir);
+} else {
+System.out.print("Jumlah hari lembur : ");
+int lembur = input.nextInt();
+pegawai = new Pramuniaga(nama, hadir, lembur);
+}
+System.out.println("\n=== HASIL GAJI PEGAWAI ===");
+System.out.println("Nama Pegawai : " + nama);
+System.out.println("Total Gaji : Rp" + pegawai.hitungGaji());
+
+}
+}
+}
