@@ -1,0 +1,235 @@
+// Modul 4 - Abstraction
+abstract class Kendaraan {
+protected String merk;
+protected int tahun;
+
+public Kendaraan(String merk, int tahun) {
+this.merk = merk;
+
+this.tahun = tahun;
+}
+
+public abstract void tampilInfo();
+
+// Tambahan Method
+public void nyalakanMesin() {
+System.out.println(merk + " mesin dinyalakan.");
+}
+
+public void matikanMesin() {
+System.out.println(merk + " mesin dimatikan.");
+}
+
+public String getMerk() {
+return merk;
+}
+
+public int getTahun() {
+return tahun;
+}
+}
+
+// Modul 4 - Interface
+interface Service {
+void servis();
+
+default void servisLengkap() {
+System.out.println("Cek mesin");
+System.out.println("Ganti oli");
+System.out.println("Pembersihan kendaraan");
+}
+
+}
+
+// Modul 2 - Inheritance + Constructor
+class Mobil extends Kendaraan implements Service {
+
+private final int jumlahPintu;
+
+public Mobil(String merk, int tahun, int jumlahPintu) {
+super(merk, tahun);
+this.jumlahPintu = jumlahPintu;
+}
+
+public int getJumlahPintu() {
+return jumlahPintu;
+}
+
+// Overloading
+public void tampilInfo(boolean detail) {
+tampilInfo();
+
+if (detail) {
+System.out.println("Status : Kendaraan siap digunakan");
+}
+}
+
+// Modul 3 - Polymorphism
+@Override
+public void tampilInfo() {
+System.out.println("=== DATA MOBIL ===");
+System.out.println("Merk : " + merk);
+System.out.println("Tahun : " + tahun);
+System.out.println("Jumlah Pintu : " + jumlahPintu);
+
+}
+
+@Override
+public void servis() {
+System.out.println(merk + " sedang diservis.");
+}
+}
+
+// Modul 2 - Inheritance + Constructor
+class Motor extends Kendaraan implements Service {
+
+private final String jenisMotor;
+
+public Motor(String merk, int tahun, String jenisMotor) {
+super(merk, tahun);
+this.jenisMotor = jenisMotor;
+}
+
+public String getJenisMotor() {
+return jenisMotor;
+}
+
+// Overloading
+public void tampilInfo(boolean detail) {
+tampilInfo();
+
+if (detail) {
+System.out.println("Kondisi : Aman digunakan");
+}
+}
+
+// Modul 3 - Polymorphism
+
+@Override
+public void tampilInfo() {
+System.out.println("=== DATA MOTOR ===");
+System.out.println("Merk : " + merk);
+System.out.println("Tahun : " + tahun);
+System.out.println("Jenis Motor : " + jenisMotor);
+}
+
+@Override
+public void servis() {
+System.out.println(merk + " sedang diservis.");
+}
+}
+
+// Class Tambahan
+class Garasi {
+
+public static void tampilSemua(Kendaraan[] daftar) {
+
+System.out.println("\n===== DATA GARASI =====");
+
+for (int i = 0; i < daftar.length; i++) {
+
+System.out.println("\nKendaraan ke-" + (i + 1));
+
+daftar[i].tampilInfo();
+
+daftar[i].nyalakanMesin();
+
+daftar[i].matikanMesin();
+}
+}
+
+public static void hitungJumlah(Kendaraan[] daftar) {
+System.out.println(
+"\nTotal kendaraan : " +
+daftar.length
+);
+}
+}
+
+// Main Class
+public class Main {
+
+public static void main(String[] args) {
+
+// Modul 1 - Class dan Object
+Kendaraan k1 =
+new Mobil(
+"Toyota",
+2022,
+4
+);
+
+Kendaraan k2 =
+new Motor(
+"Honda",
+2021,
+"Sport"
+);
+
+Kendaraan k3 =
+new Mobil(
+"Suzuki",
+
+2023,
+4
+);
+
+Kendaraan k4 =
+new Motor(
+"Yamaha",
+2024,
+"Matic"
+);
+
+// Modul 3 - Polymorphism
+k1.tampilInfo();
+
+System.out.println();
+
+k2.tampilInfo();
+
+System.out.println();
+
+// Interface
+Service s1 =
+new Mobil(
+"Daihatsu",
+2025,
+4
+);
+
+Service s2 =
+new Motor(
+"Kawasaki",
+2022,
+
+"Sport"
+);
+
+System.out.println("\n=== SERVIS ===");
+
+s1.servis();
+s1.servisLengkap();
+
+System.out.println();
+
+s2.servis();
+s2.servisLengkap();
+
+// Array Object
+Kendaraan[] daftar = {
+k1,
+k2,
+k3,
+k4
+};
+
+Garasi.tampilSemua(
+daftar
+);
+
+Garasi.hitungJumlah(
+daftar
+);
+}
+}
