@@ -1,0 +1,392 @@
+package acc4;
+
+import java.util.Scanner;
+
+//
+==========================================================
+==
+// INTERFACE: Mendefinisikan kontrak perhitungan gaji
+// Setiap kelas yang mengimplementasi interface ini WAJIB
+// mengimplementasikan semua method yang ada di dalamnya.
+//
+==========================================================
+==
+interface Penggajian {
+
+// Method untuk menghitung total gaji karyawan
+double hitungGaji();
+
+// Method untuk menentukan hari pembagian gaji
+String jadwalGaji();
+
+// Method untuk menampilkan laporan lengkap karyawan
+void tampilkanLaporan();
+}
+
+//
+==========================================================
+==
+// ABSTRACT CLASS: Kelas dasar untuk semua jenis karyawan
+// Abstract class tidak bisa diinstansiasi langsung,
+// harus diwariskan ke subclass terlebih dahulu.
+
+//
+==========================================================
+==
+abstract class Karyawan implements Penggajian {
+
+// Atribut dasar yang dimiliki semua karyawan
+protected String nama; // Nama karyawan
+protected String jabatan; // Jabatan karyawan
+protected int jumlahHadir; // Total hari hadir
+
+// Konstanta gaji per hari (final = tidak bisa diubah)
+protected final double GAJI_PER_HARI = 120_000; // Rp 120.000/hari
+protected final double GAJI_LEMBUR = 45_000; // Rp 45.000/jam lembur
+protected final double BONUS_TINGGI = 750_000; // Bonus jika hadir >=
+26 hari
+protected final double BONUS_SEDANG = 450_000; // Bonus jika hadir >=
+20 hari
+
+// Konstruktor untuk menginisialisasi data dasar karyawan
+public Karyawan(String nama, String jabatan, int jumlahHadir) {
+this.nama = nama;
+this.jabatan = jabatan;
+this.jumlahHadir = jumlahHadir;
+}
+
+// Method untuk menghitung bonus berdasarkan jumlah kehadiran
+protected double hitungBonus() {
+if (jumlahHadir >= 26) {
+return BONUS_TINGGI; // Bonus Rp 750.000 jika hadir >= 26 hari
+
+} else if (jumlahHadir >= 20) {
+return BONUS_SEDANG; // Bonus Rp 450.000 jika hadir >= 20 hari
+} else {
+return 0; // Tidak dapat bonus jika hadir < 20 hari
+}
+}
+
+// Abstract method: WAJIB diimplementasikan oleh subclass
+// Setiap jenis karyawan punya cara hitung lembur masing-masing
+@Override
+public abstract double hitungGaji();
+
+// Method untuk menentukan jadwal gaji berdasarkan total gaji
+@Override
+public String jadwalGaji() {
+double gaji = hitungGaji(); // Ambil total gaji terlebih dahulu
+
+// Penentuan hari gaji berdasarkan range nominal gaji
+if (gaji < 1_000_000) {
+return "Senin"; // Gaji < 1 juta
+} else if (gaji <= 2_500_000) {
+return "Selasa"; // Gaji 1 juta s/d 2,5 juta
+} else if (gaji <= 3_500_000) {
+return "Rabu"; // Gaji 2,5 juta s/d 3,5 juta
+} else if (gaji <= 4_500_000) {
+return "Kamis"; // Gaji 3,5 juta s/d 4,5 juta
+} else if (gaji <= 5_500_000) {
+
+return "Jumat"; // Gaji 4,5 juta s/d 5,5 juta
+} else {
+return "Sabtu"; // Gaji > 5,5 juta
+}
+}
+
+// Getter untuk mengakses atribut dari luar kelas
+public String getNama() { return nama; }
+public String getJabatan() { return jabatan; }
+public int getJumlahHadir() { return jumlahHadir; }
+}
+
+//
+==========================================================
+==
+// SUBCLASS: KaryawanTetap
+// Mewarisi Karyawan, memiliki jam lembur tetap per bulan
+//
+==========================================================
+==
+class KaryawanTetap extends Karyawan {
+
+private int jamLembur; // Jumlah jam lembur dalam sebulan
+
+// Konstruktor KaryawanTetap
+public KaryawanTetap(String nama, String jabatan, int jumlahHadir, int
+jamLembur) {
+super(nama, jabatan, jumlahHadir); // Memanggil konstruktor parent
+this.jamLembur = jamLembur;
+
+}
+
+// Implementasi wajib dari abstract method hitungGaji()
+// Rumus: (hadir x 120.000) + (jam lembur x 45.000) + bonus
+@Override
+public double hitungGaji() {
+double gajiPokok = jumlahHadir * GAJI_PER_HARI; // Gaji pokok harian
+double uangLembur = jamLembur * GAJI_LEMBUR; // Upah lembur
+double bonus = hitungBonus(); // Bonus kehadiran
+return gajiPokok + uangLembur + bonus; // Total gaji
+}
+
+// Implementasi method tampilkanLaporan dari interface Penggajian
+@Override
+public void tampilkanLaporan() {
+double gajiPokok = jumlahHadir * GAJI_PER_HARI;
+double uangLembur = jamLembur * GAJI_LEMBUR;
+double bonus = hitungBonus();
+double totalGaji = hitungGaji();
+
+System.out.println("\n╔═════════════════════════════════
+═════════════╗");
+System.out.println("║ LAPORAN GAJI KARYAWAN TETAP
+║");
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ Nama : %-27s ║%n", nama);
+
+System.out.printf ("║ Jabatan : %-27s ║%n", jabatan);
+System.out.printf ("║ Status : %-27s ║%n", "Karyawan Tetap");
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ Hadir : %-4d hari ║%n",
+jumlahHadir);
+System.out.printf ("║ Lembur : %-4d jam ║%n",
+jamLembur);
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ Gaji Pokok : Rp %,-18.0f ║%n", gajiPokok);
+System.out.printf ("║ Uang Lembur : Rp %,-18.0f ║%n", uangLembur);
+System.out.printf ("║ Bonus : Rp %,-18.0f ║%n", bonus);
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ TOTAL GAJI : Rp %,-18.0f ║%n", totalGaji);
+System.out.printf ("║ Jadwal Gaji : %-27s ║%n", "Hari " + jadwalGaji());
+System.out.println("╚══════════════════════════════════
+════════════╝");
+}
+}
+
+//
+==========================================================
+==
+// SUBCLASS: KaryawanKontrak
+// Mewarisi Karyawan, tidak mendapat bonus kehadiran penuh
+// namun tetap ada bonus minimal sebagai insentif kontrak
+
+//
+==========================================================
+==
+class KaryawanKontrak extends Karyawan {
+
+private final int jamLembur; // Jumlah jam lembur
+private final String periodeKontrak; // Masa kontrak (contoh: "6 bulan")
+
+// Konstruktor KaryawanKontrak
+public KaryawanKontrak(String nama, String jabatan, int jumlahHadir,
+int jamLembur, String periodeKontrak) {
+super(nama, jabatan, jumlahHadir);
+this.jamLembur = jamLembur;
+this.periodeKontrak = periodeKontrak;
+}
+
+// Implementasi wajib dari abstract method hitungGaji()
+// Karyawan kontrak menggunakan rumus yang sama
+@Override
+public double hitungGaji() {
+double gajiPokok = jumlahHadir * GAJI_PER_HARI;
+double uangLembur = jamLembur * GAJI_LEMBUR;
+double bonus = hitungBonus(); // Bonus tetap berlaku sesuai kehadiran
+return gajiPokok + uangLembur + bonus;
+}
+
+// Implementasi method tampilkanLaporan dari interface Penggajian
+@Override
+
+public void tampilkanLaporan() {
+double gajiPokok = jumlahHadir * GAJI_PER_HARI;
+double uangLembur = jamLembur * GAJI_LEMBUR;
+double bonus = hitungBonus();
+double totalGaji = hitungGaji();
+
+System.out.println("\n╔═════════════════════════════════
+═════════════╗");
+System.out.println("║ LAPORAN GAJI KARYAWAN KONTRAK
+║");
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ Nama : %-27s ║%n", nama);
+System.out.printf ("║ Jabatan : %-27s ║%n", jabatan);
+System.out.printf ("║ Status : %-27s ║%n", "Karyawan Kontrak");
+System.out.printf ("║ Periode : %-27s ║%n", periodeKontrak);
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ Hadir : %-4d hari ║%n",
+jumlahHadir);
+System.out.printf ("║ Lembur : %-4d jam ║%n",
+jamLembur);
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ Gaji Pokok : Rp %,-18.0f ║%n", gajiPokok);
+System.out.printf ("║ Uang Lembur : Rp %,-18.0f ║%n", uangLembur);
+System.out.printf ("║ Bonus : Rp %,-18.0f ║%n", bonus);
+
+System.out.println("╠══════════════════════════════════
+════════════╣");
+System.out.printf ("║ TOTAL GAJI : Rp %,-18.0f ║%n", totalGaji);
+System.out.printf ("║ Jadwal Gaji : %-27s ║%n", "Hari " + jadwalGaji());
+System.out.println("╚══════════════════════════════════
+════════════╝");
+}
+}
+
+//
+==========================================================
+==
+// KELAS UTAMA: Main class dengan Scanner untuk input keyboard
+//
+==========================================================
+==
+public class KaryawanApp {
+
+// Method untuk mencetak garis pemisah
+private static void cetakGaris() {
+
+System.out.println("============================================
+====");
+}
+
+// Method untuk mencetak header aplikasi
+private static void cetakHeader() {
+
+System.out.println("============================================
+====");
+
+System.out.println(" SISTEM PENDATAAN & PENGGAJIAN
+KARYAWAN ");
+System.out.println(" Praktikum Pemrograman Berorientasi Objek ");
+
+System.out.println("============================================
+====");
+}
+
+// Method untuk memvalidasi input integer agar tidak crash
+private static int inputInteger(Scanner sc, String prompt) {
+int nilai = 0;
+boolean valid = false;
+while (!valid) {
+System.out.print(prompt);
+try {
+nilai = Integer.parseInt(sc.nextLine().trim()); // Baca dan parse input
+if (nilai < 0) {
+System.out.println(" [!] Nilai tidak boleh negatif. Coba lagi.");
+} else {
+valid = true; // Input valid, keluar dari loop
+}
+} catch (NumberFormatException e) {
+System.out.println(" [!] Input harus berupa angka. Coba lagi.");
+}
+}
+return nilai;
+}
+
+public static void main(String[] args) {
+
+try ( // Membuat objek Scanner untuk membaca input dari keyboard
+Scanner scanner = new Scanner(System.in)) {
+cetakHeader();
+boolean lanjut = true; // Flag untuk mengulang program
+// Loop utama program — terus berjalan hingga user memilih keluar
+while (lanjut) {
+System.out.println("\nPilih jenis karyawan:");
+System.out.println(" [1] Karyawan Tetap");
+System.out.println(" [2] Karyawan Kontrak");
+System.out.println(" [0] Keluar");
+cetakGaris();
+System.out.print("Pilihan Anda: ");
+String pilihan = scanner.nextLine().trim(); // Baca pilihan menu
+
+switch (pilihan) {
+
+// ---- KASUS 1: Input data Karyawan Tetap ----
+case "1": {
+System.out.println("\n--- INPUT DATA KARYAWAN TETAP ---
+");
+
+// Input nama karyawan
+System.out.print("Nama Karyawan : ");
+String nama = scanner.nextLine().trim();
+
+// Input jabatan karyawan
+System.out.print("Jabatan : ");
+
+String jabatan = scanner.nextLine().trim();
+
+// Input jumlah hari hadir dengan validasi
+int hadir = inputInteger(scanner, "Jumlah Hadir : ");
+
+// Input jumlah jam lembur dengan validasi
+int lembur = inputInteger(scanner, "Jam Lembur : ");
+
+// Membuat objek KaryawanTetap (polimorfisme via Karyawan)
+Karyawan karyawan = new KaryawanTetap(nama, jabatan, hadir,
+lembur);
+
+// Memanggil method dari interface Penggajian
+karyawan.tampilkanLaporan();
+break;
+}
+
+// ---- KASUS 2: Input data Karyawan Kontrak ----
+case "2": {
+System.out.println("\n--- INPUT DATA KARYAWAN KONTRAK
+---");
+
+// Input nama karyawan
+System.out.print("Nama Karyawan : ");
+String nama = scanner.nextLine().trim();
+
+// Input jabatan karyawan
+System.out.print("Jabatan : ");
+
+String jabatan = scanner.nextLine().trim();
+
+// Input periode kontrak
+System.out.print("Periode Kontrak: ");
+String periode = scanner.nextLine().trim();
+
+// Input jumlah hari hadir dengan validasi
+int hadir = inputInteger(scanner, "Jumlah Hadir : ");
+
+// Input jumlah jam lembur dengan validasi
+int lembur = inputInteger(scanner, "Jam Lembur : ");
+
+// Membuat objek KaryawanKontrak (polimorfisme via Karyawan)
+Karyawan karyawan = new KaryawanKontrak(nama, jabatan,
+hadir, lembur, periode);
+
+// Memanggil method dari interface Penggajian
+karyawan.tampilkanLaporan();
+break;
+}
+
+// ---- KASUS 0: Keluar dari program ----
+case "0": {
+System.out.println("\nTerima kasih! Program selesai.");
+cetakGaris();
+lanjut = false; // Hentikan loop utama
+break;
+}
+
+// ---- DEFAULT: Pilihan tidak valid ----
+default: {
+System.out.println("\n[!] Pilihan tidak valid. Silakan pilih 1, 2, atau
+0.");
+}
+}
+}
+// Menutup Scanner setelah program selesai
+}
+}
+}
