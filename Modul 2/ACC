@@ -1,0 +1,31 @@
+class Karyawan {
+
+    protected String nama;
+    protected String jabatan;
+    protected int gajiPokok;
+
+    // Constructor 1
+    public Karyawan(String nama, String jabatan, int gajiPokok) {
+        this.nama = nama;
+        this.jabatan = jabatan;
+        this.gajiPokok = gajiPokok;
+    }
+
+    // Constructor 2 (Multiple Constructor)
+    public Karyawan(String nama, String jabatan) {
+        this.nama = nama;
+        this.jabatan = jabatan;
+        this.gajiPokok = 5000000;
+    }
+
+    public double hitungGajiTotal() {
+        return gajiPokok + (gajiPokok * 0.10);
+    }
+
+    public void tampilkanInfo() {
+        System.out.println("Nama        : " + nama);
+        System.out.println("Jabatan     : " + jabatan);
+        System.out.println("Gaji Pokok  : Rp" + gajiPokok);
+        System.out.println("Gaji Total  : Rp" + hitungGajiTotal());
+    }
+}
