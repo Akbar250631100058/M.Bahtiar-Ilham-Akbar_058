@@ -9,3 +9,9 @@ this.usia = usia;
 
 public String getnama(){
 return nama;
+}
+
+public int getusia(){
+return usia;
+}
+}
