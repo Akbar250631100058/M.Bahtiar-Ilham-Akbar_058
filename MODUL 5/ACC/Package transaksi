@@ -1,0 +1,24 @@
+package transaksi;
+
+import produk.Produk;
+
+public class Pemesanan {
+public int jumlah;
+
+public Pemesanan(int jumlah) {
+this.jumlah = jumlah;
+}
+
+public int hitungTotal(Produk p) {
+return p.getHarga() * jumlah;
+
+}
+
+public void tampilPesanan(Produk p) {
+System.out.println("\n=== DETAIL PESANAN ===");
+System.out.println("Produk : " + p.getNamaProduk());
+System.out.println("Harga : " + p.getHarga());
+System.out.println("Jumlah : " + jumlah);
+System.out.println("Total : " + hitungTotal(p));
+}
+}
