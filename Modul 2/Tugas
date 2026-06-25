@@ -1,1 +1,191 @@
+import java.util.Scanner;
 
+// Superclass
+class Buku {
+    protected String judul;
+    protected String pengarang;
+    protected String penerbit;
+    protected int tahunTerbit;
+    protected String kategoriBuku;
+    protected int stok;
+
+    // Constructor kosong
+    public Buku() {
+    }
+
+    // Constructor dengan parameter
+    public Buku(String judul, String pengarang, String penerbit,
+                int tahunTerbit, String kategoriBuku, int stok) {
+        this.judul = judul;
+        this.pengarang = pengarang;
+        this.penerbit = penerbit;
+        this.tahunTerbit = tahunTerbit;
+        this.kategoriBuku = kategoriBuku;
+        this.stok = stok;
+    }
+
+    public void tampilBuku() {
+        System.out.println("\n===== DATA BUKU =====");
+        System.out.println("Judul          : " + judul);
+        System.out.println("Pengarang      : " + pengarang);
+        System.out.println("Penerbit       : " + penerbit);
+        System.out.println("Tahun Terbit   : " + tahunTerbit);
+        System.out.println("Kategori Buku  : " + kategoriBuku);
+        System.out.println("Stok Buku      : " + stok);
+    }
+}
+
+// Subclass
+class Novel extends Buku {
+    protected String kategoriNovel;
+    protected String statusPeminjaman;
+
+    // Constructor kosong
+    public Novel() {
+    }
+
+    // Constructor parameter
+    public Novel(String judul, String pengarang, String penerbit,
+                 int tahunTerbit, String kategoriBuku, int stok,
+                 String kategoriNovel, String statusPeminjaman) {
+
+        super(judul, pengarang, penerbit, tahunTerbit,
+                kategoriBuku, stok);
+
+        this.kategoriNovel = kategoriNovel;
+        this.statusPeminjaman = statusPeminjaman;
+    }
+
+    public void tampilNovel() {
+        System.out.println("\n===== DATA NOVEL =====");
+        System.out.println("Judul              : " + judul);
+        System.out.println("Penulis            : " + pengarang);
+        System.out.println("Tahun Terbit       : " + tahunTerbit);
+        System.out.println("Kategori Novel     : " + kategoriNovel);
+        System.out.println("Status Peminjaman  : " + statusPeminjaman);
+    }
+}
+
+// Subclass Novel Lama
+class NovelLama extends Novel {
+
+    public NovelLama(String judul, String pengarang,
+                     String penerbit, int tahunTerbit,
+                     String kategoriNovel,
+                     String statusPeminjaman) {
+
+        super(judul, pengarang, penerbit, tahunTerbit,
+                "-", 0, kategoriNovel, statusPeminjaman);
+    }
+
+    public void info() {
+        System.out.println("Kategori : NOVEL LAMA");
+    }
+}
+
+// Subclass Novel Baru
+class NovelBaru extends Novel {
+
+    public NovelBaru(String judul, String pengarang,
+                     String penerbit, int tahunTerbit,
+                     String kategoriNovel,
+                     String statusPeminjaman) {
+
+        super(judul, pengarang, penerbit, tahunTerbit,
+                "-", 0, kategoriNovel, statusPeminjaman);
+    }
+
+    public void info() {
+        System.out.println("Kategori : NOVEL BARU");
+    }
+}
+
+// Main Class
+public class Perpustakaan {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        // INPUT BUKU
+        Buku buku = new Buku();
+
+        System.out.println("=== INPUT DATA BUKU ===");
+        System.out.print("Judul Buku : ");
+        buku.judul = input.nextLine();
+
+        System.out.print("Pengarang : ");
+        buku.pengarang = input.nextLine();
+
+        System.out.print("Penerbit : ");
+        buku.penerbit = input.nextLine();
+
+        System.out.print("Tahun Terbit : ");
+        buku.tahunTerbit = input.nextInt();
+        input.nextLine();
+
+        System.out.print("Kategori Buku : ");
+        buku.kategoriBuku = input.nextLine();
+
+        System.out.print("Stok Buku : ");
+        buku.stok = input.nextInt();
+        input.nextLine();
+
+        // INPUT NOVEL
+        Novel novel = new Novel();
+
+        System.out.println("\n=== INPUT DATA NOVEL ===");
+        System.out.print("Judul Novel : ");
+        novel.judul = input.nextLine();
+
+        System.out.print("Penulis Novel : ");
+        novel.pengarang = input.nextLine();
+
+        System.out.print("Penerbit : ");
+        novel.penerbit = input.nextLine();
+
+        System.out.print("Tahun Terbit : ");
+        novel.tahunTerbit = input.nextInt();
+        input.nextLine();
+
+        System.out.print("Kategori Novel : ");
+        novel.kategoriNovel = input.nextLine();
+
+        System.out.print("Status Peminjaman : ");
+        novel.statusPeminjaman = input.nextLine();
+
+        // Tampilkan Data
+        buku.tampilBuku();
+        novel.tampilNovel();
+
+        // Pengecekan Novel Lama / Baru
+        System.out.print("\nMasukkan batas tahun : ");
+        int batasTahun = input.nextInt();
+
+        if (novel.tahunTerbit < batasTahun) {
+            NovelLama nl = new NovelLama(
+                    novel.judul,
+                    novel.pengarang,
+                    novel.penerbit,
+                    novel.tahunTerbit,
+                    novel.kategoriNovel,
+                    novel.statusPeminjaman);
+
+            nl.info();
+
+        } else {
+
+            NovelBaru nb = new NovelBaru(
+                    novel.judul,
+                    novel.pengarang,
+                    novel.penerbit,
+                    novel.tahunTerbit,
+                    novel.kategoriNovel,
+                    novel.statusPeminjaman);
+
+            nb.info();
+        }
+
+        input.close();
+    }
+}
