@@ -22,9 +22,3 @@ System.out.println("Harga : " + harga);
 }
 }
 
-Main.java:
-package app;
-
-import java.util.Scanner;
-import produk.Produk;
-import transaksi.Pemesanan;
