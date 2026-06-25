@@ -1,0 +1,19 @@
+package package1;
+
+public class Mahasiswa {
+    public String nama = "Fahri";
+    private int umur = 20;
+    protected String jurusan = "Informatika";
+    String kampus = "Universitas XYZ"; // default
+
+    public void tampilData() {
+        System.out.println("Nama    : " + nama);
+        System.out.println("Umur    : " + umur);
+        System.out.println("Jurusan : " + jurusan);
+        System.out.println("Kampus  : " + kampus);
+    }
+
+    public int getUmur() {
+        return umur;
+    }
+}
