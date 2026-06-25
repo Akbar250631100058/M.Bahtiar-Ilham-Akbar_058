@@ -1,0 +1,87 @@
+//
+class Siswa {
+String nama;
+String nis;
+
+void tampilData() {
+System.out.println("Nama : " + nama);
+System.out.println("NIS : " + nis);
+}
+}
+
+//
+class Pembayaran {
+int biayaDasar;
+int biayaAdmin = 5000;
+
+int hitungTotal() {
+return biayaDasar + biayaAdmin;
+}
+}
+
+//
+
+class PembayaranSPP extends Pembayaran {
+int denda = 0;
+int tanggal;
+
+void hitungDenda() {
+if (tanggal > 10) {
+denda = 15000;
+}
+}
+
+@Override
+int hitungTotal() {
+return biayaDasar + biayaAdmin + denda;
+}
+}
+
+//
+class PembayaranSeragam extends Pembayaran {
+String ukuran;
+int tambahan = 0;
+
+void hitungTambahan() {
+if (ukuran.equals("XL")) {
+tambahan = 20000;
+}
+}
+
+@Override
+int hitungTotal() {
+return biayaDasar + biayaAdmin + tambahan;
+}
+
+}
+
+//
+public class Main {
+public static void main(String[] args) {
+
+System.out.println("Program Pembayaran Sekolah");
+
+//
+Siswa s = new Siswa();
+s.nama = "Akbar";
+s.nis = "0058";
+s.tampilData();
+
+//
+PembayaranSPP spp = new PembayaranSPP();
+spp.biayaDasar = 100000;
+spp.tanggal = 15;
+spp.hitungDenda();
+
+System.out.println("Total SPP : " + spp.hitungTotal());
+
+//
+PembayaranSeragam seragam = new PembayaranSeragam();
+seragam.biayaDasar = 150000;
+seragam.ukuran = "XL";
+seragam.hitungTambahan();
+
+System.out.println("Total Seragam : " + seragam.hitungTotal());
+
+}
+}
