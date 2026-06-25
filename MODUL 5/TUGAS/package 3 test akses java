@@ -1,0 +1,23 @@
+package package3;
+
+import package1.Mahasiswa;
+
+public class TestAkses {
+    public static void main(String[] args) {
+
+        Mahasiswa mhs = new Mahasiswa();
+
+        System.out.println("Public : " + mhs.nama);
+
+        // Error karena private
+        // System.out.println(mhs.umur);
+
+        // Error karena protected beda package
+        // System.out.println(mhs.jurusan);
+
+        // Error karena default beda package
+        // System.out.println(mhs.kampus);
+
+        System.out.println("Umur (getter): " + mhs.getUmur());
+    }
+}
