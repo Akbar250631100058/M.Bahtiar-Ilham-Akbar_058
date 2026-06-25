@@ -1,0 +1,213 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Superclass
+abstract class Pegawai {
+
+    protected String nik;
+    protected String nama;
+    protected int kehadiran;
+    protected double gaji;
+
+    public Pegawai(String nik, String nama, int kehadiran, double gaji) {
+        this.nik = nik;
+        this.nama = nama;
+        this.kehadiran = kehadiran;
+        this.gaji = gaji;
+    }
+
+    public abstract double hitungGaji();
+
+    public abstract void lihatData();
+}
+
+// Pegawai Tetap
+class PegawaiTetap extends Pegawai {
+
+    private final double tunjangan = 720000;
+
+    public PegawaiTetap(String nik, String nama,
+                        int kehadiran, double gaji) {
+        super(nik, nama, kehadiran, gaji);
+    }
+
+    @Override
+    public double hitungGaji() {
+        double uangMakan = kehadiran * 12000;
+        return tunjangan + uangMakan + gaji;
+    }
+
+    @Override
+    public void lihatData() {
+        System.out.println("\n=== PEGAWAI TETAP ===");
+        System.out.println("NIK          : " + nik);
+        System.out.println("Nama         : " + nama);
+        System.out.println("Kehadiran    : " + kehadiran);
+        System.out.println("Tunjangan    : Rp720000");
+        System.out.println("Uang Makan   : Rp" + (kehadiran * 12000));
+        System.out.println("Gaji Pokok   : Rp" + gaji);
+        System.out.println("Gaji Bersih  : Rp" + hitungGaji());
+    }
+}
+
+// Pegawai Kontrak
+class PegawaiKontrak extends Pegawai {
+
+    private int masaKontrak;
+
+    public PegawaiKontrak(String nik, String nama,
+                          int masaKontrak,
+                          int kehadiran, double gaji) {
+        super(nik, nama, kehadiran, gaji);
+        this.masaKontrak = masaKontrak;
+    }
+
+    @Override
+    public double hitungGaji() {
+        double uangMakan = kehadiran * 12000;
+        return uangMakan + gaji;
+    }
+
+    @Override
+    public void lihatData() {
+        System.out.println("\n=== PEGAWAI KONTRAK ===");
+        System.out.println("NIK            : " + nik);
+        System.out.println("Nama           : " + nama);
+        System.out.println("Masa Kontrak   : " + masaKontrak + " bulan");
+        System.out.println("Kehadiran      : " + kehadiran);
+        System.out.println("Uang Makan     : Rp" + (kehadiran * 12000));
+        System.out.println("Gaji Pokok     : Rp" + gaji);
+        System.out.println("Gaji Bersih    : Rp" + hitungGaji());
+    }
+}
+
+// Pegawai Magang
+class PegawaiMagang extends Pegawai {
+
+    public PegawaiMagang(String nik, String nama,
+                         int kehadiran, double gaji) {
+        super(nik, nama, kehadiran, gaji);
+    }
+
+    @Override
+    public double hitungGaji() {
+        double uangMakan = kehadiran * 10000;
+        return uangMakan + gaji;
+    }
+
+    @Override
+    public void lihatData() {
+        System.out.println("\n=== PEGAWAI MAGANG ===");
+        System.out.println("NIK          : " + nik);
+        System.out.println("Nama         : " + nama);
+        System.out.println("Kehadiran    : " + kehadiran);
+        System.out.println("Uang Makan   : Rp" + (kehadiran * 10000));
+        System.out.println("Gaji         : Rp" + gaji);
+        System.out.println("Gaji Bersih  : Rp" + hitungGaji());
+    }
+}
+
+// Main Class
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        ArrayList<Pegawai> daftarPegawai = new ArrayList<>();
+
+        int pilih;
+
+        do {
+
+            System.out.println("\nPT. SINAR SOSRO");
+            System.out.println("=====================");
+            System.out.println("MENU UTAMA");
+            System.out.println("=====================");
+            System.out.println("1. Input Data Pegawai");
+            System.out.println("2. Lihat Data Pegawai");
+            System.out.println("3. Keluar");
+            System.out.print("Pilihan : ");
+            pilih = input.nextInt();
+            input.nextLine();
+
+            switch (pilih) {
+
+                case 1:
+
+                    System.out.println("\nJenis Pegawai");
+                    System.out.println("1. Pegawai Tetap");
+                    System.out.println("2. Pegawai Kontrak");
+                    System.out.println("3. Pegawai Magang");
+                    System.out.print("Pilih : ");
+                    int jenis = input.nextInt();
+                    input.nextLine();
+
+                    System.out.print("NIK : ");
+                    String nik = input.nextLine();
+
+                    System.out.print("Nama : ");
+                    String nama = input.nextLine();
+
+                    System.out.print("Kehadiran : ");
+                    int hadir = input.nextInt();
+
+                    if (jenis == 1) {
+
+                        System.out.print("Gaji Pokok : ");
+                        double gaji = input.nextDouble();
+
+                        daftarPegawai.add(
+                                new PegawaiTetap(
+                                        nik, nama, hadir, gaji));
+
+                    } else if (jenis == 2) {
+
+                        System.out.print("Masa Kontrak (bulan) : ");
+                        int masa = input.nextInt();
+
+                        System.out.print("Gaji Pokok : ");
+                        double gaji = input.nextDouble();
+
+                        daftarPegawai.add(
+                                new PegawaiKontrak(
+                                        nik, nama, masa,
+                                        hadir, gaji));
+
+                    } else if (jenis == 3) {
+
+                        System.out.print("Gaji : ");
+                        double gaji = input.nextDouble();
+
+                        daftarPegawai.add(
+                                new PegawaiMagang(
+                                        nik, nama, hadir, gaji));
+                    }
+
+                    break;
+
+                case 2:
+
+                    if (daftarPegawai.isEmpty()) {
+                        System.out.println("Belum ada data pegawai.");
+                    } else {
+
+                        for (Pegawai p : daftarPegawai) {
+                            p.lihatData(); // Polymorphism
+                        }
+                    }
+
+                    break;
+
+                case 3:
+                    System.out.println("Program selesai...");
+                    break;
+
+                default:
+                    System.out.println("Pilihan tidak tersedia!");
+            }
+
+        } while (pilih != 3);
+
+        input.close();
+    }
+}
