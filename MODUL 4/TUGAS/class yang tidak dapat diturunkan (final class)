@@ -1,0 +1,12 @@
+final class AdminPerusahaan {
+
+    private String namaAdmin;
+
+    public AdminPerusahaan(String namaAdmin) {
+        this.namaAdmin = namaAdmin;
+    }
+
+    public void tampilAdmin() {
+        System.out.println("Admin : " + namaAdmin);
+    }
+}
