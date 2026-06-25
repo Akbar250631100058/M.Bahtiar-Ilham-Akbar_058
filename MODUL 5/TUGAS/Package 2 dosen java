@@ -1,0 +1,22 @@
+package package2;
+
+import package1.Mahasiswa;
+
+public class Dosen {
+    public void cekData() {
+        Mahasiswa mhs = new Mahasiswa();
+
+        System.out.println("Public : " + mhs.nama);
+
+        // Tidak bisa diakses
+        // System.out.println(mhs.umur);
+
+        // Tidak bisa diakses beda package
+        // System.out.println(mhs.jurusan);
+
+        // Tidak bisa diakses beda package
+        // System.out.println(mhs.kampus);
+
+        System.out.println("Umur (getter): " + mhs.getUmur());
+    }
+}
